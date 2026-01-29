@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Our Space ♾️</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="wallpaper-bg">
+
+    <section id="lock-screen">
+        <div class="lock-info">
+            <h1 id="clock">00:00</h1>
+            <p id="date">Thursday, January 29</p>
+        </div>
+        <div class="swipe-area" id="swipe-trigger">
+            <div class="chevron"></div>
+            <p>Swipe up to unlock</p>
+        </div>
+    </section>
+
+    <section id="login-drawer">
+        <div class="drawer-handle"></div>
+        <div class="pin-section">
+            <h2>Enter PIN</h2>
+            <div class="pin-display">
+                <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+            <div class="numpad">
+                <button onclick="inputPin('1')">1</button><button onclick="inputPin('2')">2</button><button onclick="inputPin('3')">3</button>
+                <button onclick="inputPin('4')">4</button><button onclick="inputPin('5')">5</button><button onclick="inputPin('6')">6</button>
+                <button onclick="inputPin('7')">7</button><button onclick="inputPin('8')">8</button><button onclick="inputPin('9')">9</button>
+                <div class="empty"></div><button onclick="inputPin('0')">0</button><button onclick="deletePin()">⌫</button>
+            </div>
+            <button class="cancel-btn" onclick="closeDrawer()">Cancel</button>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

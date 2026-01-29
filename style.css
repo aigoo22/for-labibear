@@ -1,0 +1,548 @@
+/* ==========================================================
+   0. CORE RESET & VIEWPORT LOCK
+   ========================================================== */
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==========================================================
+   1. GLOBAL STYLES & BASE ANIMATED GRADIENT (For Letter)
+   ========================================================== */
+html {
+    background-color: #363232; /* Or any dark color/gradient from your theme */
+}
+
+body {
+    background: linear-gradient(-45deg, #e3f8c2, #f7866a, #eb719c, #b7b8ec);
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
+    background-attachment: fixed; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: "Playwrite NZ Basic", cursive;
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ==========================================================
+   2. SYSTEM WALLPAPERS (Lock, Login, and Home)
+   ========================================================== */
+
+/* Standard Wallpaper (For index.html) */
+body.wallpaper-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                url('wallpaper.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: none;
+    overflow: hidden;
+    position: fixed;
+}
+
+/* Blurred Wallpaper (For home.html) */
+body.wallpaper-blur {
+    background: none; 
+    animation: none;
+    overflow: hidden;
+    position: fixed;
+}
+
+body.wallpaper-blur::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                url('wallpaper.png');
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px); /* Professional depth-of-field */
+    transform: scale(1.1); /* Prevents fuzzy edges on high-res panels */
+}
+
+/* ==========================================================
+   4. LOCK SCREEN LAYER (index.html)
+   ========================================================== */
+#lock-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 80px 0;
+    color: white;
+    transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.lock-info { text-align: center; pointer-events: none; }
+
+#clock { 
+    font-family: 'Space Grotesk', sans-serif; 
+    font-size: 6rem; 
+    margin: 0; 
+    font-weight: 300; 
+    text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+#date { 
+    font-size: 1.5rem; 
+    margin-top: -10px; 
+    font-family: 'Space Grotesk', sans-serif;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.swipe-area { text-align: center; cursor: pointer; animation: bounce 2s infinite; }
+.chevron { 
+    width: 25px; height: 25px; 
+    border-top: 3px solid white; 
+    border-left: 3px solid white; 
+    transform: rotate(45deg); 
+    margin: 0 auto 10px; 
+}
+
+@keyframes bounce { 
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 
+    40% {transform: translateY(-12px);} 
+}
+
+/* ==========================================================
+   5. LOGIN DRAWER (Glassmorphism & PIN Pad)
+   ========================================================== */
+#login-drawer {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    height: 95%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border-radius: 40px 40px 0 0;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    z-index: 300;
+    transition: bottom 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+#login-drawer.active { bottom: 0; }
+.drawer-handle { width: 45px; height: 5px; background: rgba(255,255,255,0.5); border-radius: 10px; }
+
+.pin-section {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: 40px;
+}
+
+.pin-section h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    color: white;
+    margin: 0 0 20px 0;
+    width: 100%;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.pin-display { display: flex; justify-content: center; gap: 20px; margin: 30px 0; }
+.dot { width: 15px; height: 15px; border: 2px solid white; border-radius: 50%; transition: 0.2s; }
+.dot.filled { background: white; box-shadow: 0 0 10px white; }
+
+.numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; justify-items: center; }
+.numpad button { 
+    width: 80px; height: 80px; 
+    border-radius: 50%; border: none; 
+    background: rgba(255, 255, 255, 0.12); 
+    color: white; font-size: 2rem;
+    font-family: 'Space Grotesk', sans-serif; 
+    font-weight: 300; 
+    cursor: pointer; 
+    transition: background 0.2s, transform 0.1s;
+    display: flex; justify-content: center; align-items: center;
+}
+.numpad button:active { background: rgba(255, 255, 255, 0.3); transform: scale(0.95); }
+
+.cancel-btn { 
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: none; border: none; color: white; 
+    margin: 40px auto 0 auto; 
+    font-size: 0.9rem; cursor: pointer; opacity: 0.8; 
+    display: block;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+.shake { animation: shake 0.4s ease-in-out; }
+
+/* ==========================================================
+   6. HOME SCREEN (Springboard - home.html)
+   ========================================================== */
+#home-screen {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    padding: 20px;
+    max-width: 450px;
+    justify-items: center;
+}
+
+.app-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.app-item:hover { transform: scale(1.1); }
+
+.app-icon {
+    width: 70px; height: 70px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.app-label {
+    margin-top: 8px; color: white; font-size: 0.85rem;
+    font-family: 'Space Grotesk', sans-serif;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.system-icon {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ==========================================================
+   7. VALENTINE CARD APP (letter.html)
+   ========================================================== */
+#valentine-card {
+    background: rgba(255, 255, 255, 0.45); 
+    backdrop-filter: blur(15px); 
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    padding: 40px;
+    border-radius: 30px;
+    text-shadow: none;
+    text-align: center;
+    width: 550px; /* New requested width */
+    height: 600px; /* Slightly taller to maintain aspect ratio */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-sizing: border-box; 
+    overflow: visible !important; /* Allows button to leave the card area */
+}
+
+intro {
+    color: #d32f2f;
+    font-family: "Lexend Deca", sans-serif;
+    font-weight: 800;
+    font-size: 3.5rem;
+    margin-bottom: 5px;
+    letter-spacing: -2px;
+}
+
+h1 { color: #d32f2f; font-size: 1.6rem; margin: 20px 0; }
+
+.gif-container {
+    width: 100%; height: 250px;
+    display: flex; justify-content: center; align-items: center;
+    margin-bottom: 10px;
+}
+#intro-gif, #main-gif { max-width: 100%; max-height: 100%; border-radius: 15px; object-fit: contain; }
+
+.game-gif {
+    width: 100%; height: 180px;
+    display: flex; justify-content: center; align-items: center;
+    margin-bottom: 10px;
+}
+
+/* ==========================================================
+   UPDATED SANDBOX & BUTTON INTERACTION
+   ========================================================== */
+#no-button-sandbox {
+    position: relative;
+    width: 80vw; /* 80% of the viewport width */
+    height: 80vh; /* 80% of the viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    /* Optional: border: 2px dashed rgba(255,255,255,0.1); (To see the play area) */
+}
+
+#noButton {
+    position: relative;
+    /* CRITICAL: Must be higher than everything else */
+    z-index: 9999 !important; 
+    pointer-events: auto !important; /* Forces the hover to register */
+    margin: 0;
+    
+    /* Shape Lock */
+    min-width: 100px; 
+    height: 50px; 
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Visuals */
+    color: #e14034; 
+    border: 2px solid #e14034; 
+    box-shadow: 4px 4px 0px rgba(163, 68, 68, 0.2);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.2); /* Slightly higher opacity for visibility */
+    backdrop-filter: blur(5px);
+    font-family: "Playwrite NZ Basic", cursive;
+    font-weight: 600;
+    
+    /* Glide movement */
+    transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                top 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.buttons { display: flex; justify-content: center; gap: 20px; margin-top: 20px; }
+
+button {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-family: "Playwrite NZ Basic", cursive; 
+    font-weight: 600;
+    border: 2px solid; 
+    border-radius: 15px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+button:hover {
+    color: white !important;
+    box-shadow: 0px 0px 0px transparent;
+    transform: scale(1.05) translateY(-2px);
+}
+
+#continueButton { color: #d32f2f; border-color: #d32f2f; box-shadow: 4px 4px 0px rgba(211, 47, 47, 0.2); }
+#continueButton:hover { background-color: #d32f2f; }
+
+/* Next Button - Pink Edition */
+#toGameButton {
+    color: #d32f2f; /* Soft Pink */
+    border-color: #d32f2f;
+    box-shadow: 4px 4px 0px rgba(255, 143, 171, 0.2);
+    position: relative;
+    min-width: 120px;
+    height: 50px;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto 0; /* Centers it under the message */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#toGameButton:hover {
+    background-color: #d32f2f;
+    color: white !important;
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: 0px 10px 20px rgba(255, 143, 171, 0.3);
+}
+
+#toGameButton:active {
+    transform: scale(0.95);
+}
+
+#yesButton { 
+    color: #44a348; 
+    border-color: #44a348; 
+    box-shadow: 4px 4px 0px rgba(68, 163, 72, 0.2);
+    position: relative; 
+    /* Shape Lock */
+    min-width: 100px; 
+    height: 50px; 
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#yesButton:hover { background-color: #44a348; }
+
+/* Home Button (Floating UI) */
+.home-button {
+    position: fixed; top: 30px; left: 30px; z-index: 10000;
+    display: flex; flex-direction: column; align-items: center;
+    cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.home-button:hover { transform: scale(1.1); }
+
+/* ==========================================================
+   8. TRANSITIONS & EMOJI BACKGROUND
+   ========================================================== */
+
+/* Fade-out for intro section */
+.section-exit {
+    opacity: 0 !important;
+    transform: scale(0.8) translateY(-20px);
+    filter: blur(10px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+/* Elastic bounce-in for question section */
+.section-enter {
+    animation: elasticPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes elasticPop {
+    0% { opacity: 0; transform: scale(0.5); filter: blur(15px); }
+    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+/* Ensure both sections occupy the same space */
+#intro-section, #letter-section, #game-section, #question-section {
+    position: absolute;
+    width: 90%;
+    transition: all 0.5s ease;
+}
+
+.emoji {
+    position: fixed; /* Changed from absolute to fixed */
+    bottom: -50px;
+    font-size: 1.5rem;
+    user-select: none;
+    pointer-events: none;
+    z-index: 1; /* Ensure it's above the background gradient */
+    animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+}
+
+/* Styling for the new Message section */
+.video-frame {
+    background: white;
+    padding: 10px 10px 30px 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transform: rotate(2deg); /* A slight tilt for character */
+    margin: 10px auto;
+    width: 250px;
+    display: inline-block;
+}
+
+#our-video {
+    width: 100%;
+    border-radius: 4px;
+    display: block;
+}
+
+.personal-message {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    color: #d32f2f;
+    line-height: 1.5;
+    margin: 15px 0;
+}
+
+#letter-section {
+    position: absolute;
+    width: 90%;
+    transition: all 0.5s ease;
+}
+
+#game-canvas {
+    width: 100%;
+    height: 250px;
+    background: rgba(255, 255, 255, 0.15); /* Slightly lighter */
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden; 
+    border: 2px dashed rgba(255, 255, 255, 0.5); /* White dash looks cleaner with the dark background */
+    margin: 20px 0;
+    display: block;
+    backdrop-filter: blur(5px);
+}
+
+#score-display {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: bold;
+    color: #d32f2f;
+}
+
+/* Update the falling-heart class in style.css */
+.falling-heart {
+    position: absolute;
+    font-size: 1.8rem; /* Slightly smaller for more chaos */
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s, opacity 0.2s;
+    z-index: 5;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.falling-heart:hover {
+    transform: scale(1.5);
+}
+
+.game-instructions {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.9rem;
+    color: #666;
+}

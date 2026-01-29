@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background: linear-gradient(-45deg, #fe6a6a, #ffcfd2, #eb719c, #e1f5fe);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .emoji {
+            position: fixed;
+            bottom: -50px;
+            font-size: 1.5rem;
+            user-select: none;
+            pointer-events: none;
+            z-index: 10000;
+            animation: floatUp linear forwards;
+        }
+        
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color: white; text-align: center; margin-top: 50px;">Emoji Test - Watch for floating emojis</h1>
+    
+    <script>
+        const emojis = ['❤️', '💖', '✨', '🌸', '💕', '🦖', '🐶', '🧸', '😘', '♾️'];
+
+        function createEmoji() {
+            const emoji = document.createElement('div');
+            emoji.classList.add('emoji');
+            
+            emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.left = Math.random() * 100 + "vw";
+            
+            const duration = Math.random() * 7 + 7; 
+            emoji.style.animationDuration = duration + "s";
+            emoji.style.fontSize = Math.random() * 20 + 10 + "px";
+
+            document.body.appendChild(emoji);
+
+            setTimeout(() => {
+                emoji.remove();
+            }, duration * 1000);
+        }
+
+        // Start the loop
+        setInterval(createEmoji, 500);
+        
+        console.log("Emoji creation started!");
+    </script>
+</body>
+</html>
