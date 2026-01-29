@@ -10,11 +10,28 @@
 <body class="wallpaper-blur">
 
     <main id="home-screen">
+        <div class="top-nav-bar">
+            <div id="mute-btn" class="nav-item mute-toggle" onclick="toggleMute()">
+                <div class="nav-icon"><span>🔊</span></div>
+                <p class="nav-label">Music</p>
+            </div>
+        </div>
         <div class="app-grid">
             <div class="app-item" onclick="launchApp('letter.html')">
-                <div class="app-icon"><span>✉️</span></div>
-                <p class="app-label">Click Me!</p>
+                <div class="app-icon main-app"><span>✉️</span></div>
+                <p class="app-label">For You</p>
             </div>
+
+            <div class="app-item" onclick="alert('Coming soon: Our Gallery! 📸')">
+                <div class="app-icon"><span>🖼️</span></div>
+                <p class="app-label">Photos</p>
+            </div>
+
+            <div class="app-item" onclick="alert('Coming soon: Our Playlist! 🎵')">
+                <div class="app-icon"><span>🎧</span></div>
+                <p class="app-label">Music</p>
+            </div>
+
             <div class="app-item" onclick="launchApp('index.html')">
                 <div class="app-icon system-icon">
                     <span>🔒</span>
@@ -25,5 +42,6 @@
     </main>
 
     <script src="script.js"></script>
+
 </body>
 </html>

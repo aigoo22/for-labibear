@@ -9,9 +9,16 @@
 </head>
 <body>
 
-    <div class="home-button" onclick="launchApp('home.html')">
-        <div class="app-icon"><span>🏠</span></div>
-        <p class="app-label">Home</p>
+    <div class="top-nav-bar">
+        <div class="nav-item" onclick="launchApp('home.html')">
+            <div class="nav-icon"><span>🏠</span></div>
+            <p class="nav-label">Home</p>
+        </div>
+        
+        <div id="mute-btn" class="nav-item mute-toggle" onclick="toggleMute()">
+            <div class="nav-icon"><span>🔊</span></div>
+            <p class="nav-label">Music</p>
+        </div>
     </div>
 
     <div id="no-button-sandbox">
@@ -22,7 +29,9 @@
             </div>
             <intro>HI LABIBEAR!</intro>
             <h1 class="intro-text">I have a question for you...</h1>
-            <button id="continueButton" onclick="showLetter()">Of course baby, what is it?</button>
+            <button id="continueButton" onclick="window.playMusic(); showLetter()">
+                Of course baby, what is it?
+            </button>
         </div>
 
         <div id="letter-section" style="display: none;">
@@ -35,9 +44,10 @@
             </div>
 
             <p class="personal-message">
-                Labibear, every moment with you is a treasure.<br>
-                I wanted to take a second to remind you how <br>
-                much I love our adventures together. ❤️
+                I just wanted to say how lucky I am to have you in<br>
+                my life. From all the moments we've shared together<br>
+                to all the memories we'll make in the future—I want<br>
+                to cherish each and every one of them. ❤️♾️
             </p>
             
             <button id="toGameButton" onclick="showGame()">Now that I've said that...</button>
@@ -70,7 +80,7 @@
                 <img id="celebration-gif" src="https://media.tenor.com/4Ijycn6xFzUAAAAj/mochi-blue-roses.gif" alt="Happy Cat">
             </div>
             <intro>Hooray!</intro>
-            <h1>Can't wait for our Valentine's date!</h1>
+            <h1>Can't wait for our Valentine's date! <br> I love you!</h1>
         </div>
     </div>
 
@@ -83,5 +93,6 @@
             console.log("Emoji elements on page:", emojiCount);
         }, 3000);
     </script>
+
 </body>
 </html>

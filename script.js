@@ -133,7 +133,9 @@ function initNoButton() {
     const noBtn = document.getElementById('noButton');
     const sandbox = document.getElementById('no-button-sandbox');
     const yesBtn = document.getElementById('yesButton');
-    const mainGif = document.getElementById('main-gif');
+    // New way - specifically looks for the GIF inside the question section
+    const questionSection = document.getElementById('question-section');
+    const mainGif = questionSection ? questionSection.querySelector('img') : null;
 
     // Store the original GIF source at the start
     const originalGif = "https://media.tenor.com/ivKWdfdbV3EAAAAi/goma-goma-cat.gif";
@@ -309,6 +311,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function showLetter() {
+    playMusic();
     const intro = document.getElementById('intro-section');
     const letter = document.getElementById('letter-section');
     
@@ -410,7 +413,7 @@ function spawnHeart() {
             item.style.transform = 'scale(2)'; // Visual feedback for catch
             item.style.opacity = '0';
             
-            if (score >= 1) {
+            if (score >= 11) {
                 clearInterval(gameInterval);
                 document.querySelectorAll('.falling-heart').forEach(el => el.remove());
                 finishGame();
@@ -454,3 +457,37 @@ function finishGame() {
         }, 500);
     }
 }
+
+/* ==========================================================
+   FINAL STABLE MUSIC LOGIC
+   ========================================================== */
+const bgMusic = new Audio('passenger-seat.mp3'); 
+bgMusic.loop = true;
+bgMusic.volume = 0.15; 
+
+let isMuted = false;
+
+// Global function for the HTML buttons to call
+window.playMusic = function() {
+    bgMusic.play().then(() => {
+        console.log("Audio started successfully");
+    }).catch(err => {
+        console.log("Audio blocked by browser. Need a user click first.");
+    });
+};
+
+window.toggleMute = function() {
+    // This targets the emoji inside the span for your specific HTML structure
+    const muteIconSpan = document.querySelector('.mute-toggle .nav-icon span');
+    isMuted = !isMuted;
+    bgMusic.muted = isMuted;
+    
+    if (muteIconSpan) {
+        muteIconSpan.innerText = isMuted ? '🔈' : '🔊';
+    }
+};
+
+// CRITICAL: This ensures any click on the page (PIN, swipe, buttons) starts the music
+document.addEventListener('click', () => {
+    window.playMusic();
+}, { once: true });
