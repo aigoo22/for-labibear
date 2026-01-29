@@ -413,7 +413,7 @@ function spawnHeart() {
             item.style.transform = 'scale(2)'; // Visual feedback for catch
             item.style.opacity = '0';
             
-            if (score >= 1) {
+            if (score >= 11) {
                 clearInterval(gameInterval);
                 document.querySelectorAll('.falling-heart').forEach(el => el.remove());
                 finishGame();
@@ -490,4 +490,5 @@ window.toggleMute = function() {
 // CRITICAL: This ensures any click on the page (PIN, swipe, buttons) starts the music
 document.addEventListener('click', () => {
     window.playMusic();
+
 }, { once: true });
