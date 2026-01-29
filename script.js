@@ -490,5 +490,4 @@ window.toggleMute = function() {
 // CRITICAL: This ensures any click on the page (PIN, swipe, buttons) starts the music
 document.addEventListener('click', () => {
     window.playMusic();
-
 }, { once: true });
