@@ -139,7 +139,7 @@ function initNoButton() {
 
     // Store the original GIF source at the start
     const originalGif = "https://media.tenor.com/ivKWdfdbV3EAAAAi/goma-goma-cat.gif";
-    const sadGif = "https://media.tenor.com/sez2ZSTounAAAAAj/sad-without-you.gif";
+    const sadGif = "sad.png";
 
     if (!noBtn || !sandbox) return;
 
@@ -413,7 +413,7 @@ function spawnHeart() {
             item.style.transform = 'scale(2)'; // Visual feedback for catch
             item.style.opacity = '0';
             
-            if (score >= 11) {
+            if (score >= 1) {
                 clearInterval(gameInterval);
                 document.querySelectorAll('.falling-heart').forEach(el => el.remove());
                 finishGame();
