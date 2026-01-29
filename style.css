@@ -478,6 +478,13 @@ button:hover {
     margin: 10px auto;
     width: 250px;
     display: inline-block;
+    opacity: 0;
+    animation: fadeInVideo 1s ease forwards;
+    animation-delay: 0.5s; /* Waits for the card to appear first */
+}
+
+@keyframes fadeInVideo {
+    to { opacity: 1; }
 }
 
 #our-video {
